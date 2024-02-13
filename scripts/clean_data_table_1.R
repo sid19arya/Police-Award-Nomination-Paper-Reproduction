@@ -5,8 +5,8 @@ library(dplyr)
 library(readr)
 library(stringr)
 
-officer_year_data <- read_csv("~/Downloads/officer_year_data.csv")
-officer_month_data <- read.csv("~/Downloads/officer_month_data.csv")
+officer_year_data <- read_csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_year_data.csv")
+officer_month_data <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_month_data.csv")
 
 unit44_data <- officer_month_data[officer_month_data$unit == 44, ]
 unique_nuid <- unit44_data |>

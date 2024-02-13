@@ -28,7 +28,7 @@ library(stringr)
 ```
 
 
-# 1. Introduction
+# Introduction
 
 There have been many studies that focus on police-civilian interactions with racial disparities but there aren’t many looking into the racial disparities within the police departments. This paper uses the key metric of internal recognition among Chicago Police Department officers and its departmental award nominations. The departmental award nomination is the measure of performance in this paper as promotions are very rare in police departments; only 3 percent of police officers in CPD were promoted to sergeant during the period 2007 to 2015. To analyze the racial disparities among CPD, we made a database of CPD officers including the following variables: demographics, district assignments, civilian complaints, arrests, award performance, and Tactical Response Reports filings. This analysis will have implications on crime and community safety as a diverse police force may improve policing quality (Miller and Segal 2019).
 
@@ -37,12 +37,14 @@ The dataset was obtained from the American Economic Association (AEA 2022). The 
 The goal of this paper is to reproduce the original tables and graphs produced from the data with our own methodologies using R and expand on this to explore further on correlations between race and award performance in a specific district. The paper starts with a discussion of the data source and explains the methodologies used to replicate the tables and graphs of the original paper. Then, we will reproduce the selected results to confirm their findings and improve the accessibility of the data. The paper will conclude with a discussion of the findings in which we apply the methodologies used to find out the correlation between race, gender, and award performance. This research will help us find out if there are racial or gender disparities among CPD officers internally. The results show if there needs to be counterbalancing in promotion and advancement, considering the racial and sexual disparities. 
 
 
-# 2. Data {#sec-data}
-## 2.1. Data sources 
+# Data {#sec-data}
+## Data sources 
 The data of the characteristics of CPD is obtained from the original paper (Rim, Ba, and Rivera 2019b). This is the source of our raw data in which we clean to make the tables and graphs. The dataset contains demographics, rank, tenure, district assignment, awards, arrests, use of force measured by Tactical Response Reports filings, and complaints. The dataset is focused on the periods 2007 to 2015. For simplicity, we use the dataset the authors of the original paper have made and further clean, analyze it for replication and further research.  
 
-## 2.2. Summary statistics.
+## Summary statistics.
 ```{r}
+# run code in ***name of script
+organized_table_1
 ```
 
 
@@ -51,68 +53,48 @@ To produce table 1, we must first extract the subset of CPD in which officers ar
 
 
 
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
 # Results
 
-Our results are summarized in @tbl-modelresults.
-
+## Disparities in police awards 
 ```{r}
-#| echo: false
-#| eval: true
+#| echo:  false
 #| warning: false
 #| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+ # run script **name 
+stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, 
+          omit =c("hisp", "asian", "natam", "birth_year", "tenure", "tenure2",
+          "tenure3", "L_cmpl_civ", "L_cmpl_civ2", "L_cmpl_civ3",
+          "L_arrest_total", "L_arrest_total2","L_arrest_total3","L_trr_new",
+          "L_trr_new2","L_trr_new3"),
+          omit.stat=c("f", "rsq","adj.rsq"),
+          add.lines=list(c("Control for"),
+                         c("Cohort", "Yes", "Yes", "Yes", "Yes"), 
+                         c("Year",  "Yes", "Yes", "Yes", "Yes"), 
+                         c("Demographics", " ", " ", "Yes", "Yes"),
+                         c("Policing activities", "", "", "Yes", "Yes"),
+                         c("Reference group mean",round(mean_white, digits = 2), 
+                           round(mean_female_0, digits = 2), 
+                           round(mean_white_female_0, digits = 2), 
+                           round(mean_white_female_0, digits = 2))), 
+          type = 'text')
 ```
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
+(Table 2) is the replication of Table 2 in the original paper, and it shows the regressions of the variables black and female on the total awards nomination with 4 specifications. The result of the replication is slightly different than the result in the paper as the author took an estimate of the sample in the data set without specifying which estimates. Using this method gave the author only 4057 observations out of 5775 observations. However, the results when we use the entire data set are close to the original paper and we come to the same conclusion. 
 
+*** equation 1: Award_perf it = b0 + b1black it +  b2 hisp it + b3 asian it + b4natam it + e it ( e is error term)
+
+Specification (1) displayed the regression of race on the number of awards nominations. Since the data set is panel data, the fixed effect method was used in the analysis to control for some individual-specific characteristics that don’t change over time which helped to control for some unobserved factors to address potential endogenity. Specification (1) controls for “cohort” which is defined as all officers who start in the same district in the same quarter and years. Column 1 yields a  (b1) of -6.217 which is 17% higher than the original paper results. This result is statistically significant at 1% and indicates that on average, black officers get 6.2 fewer awards than their white counterparts. With the average awards white officers received of 10.8 awards, black officers received 56.7% fewer awards than white officers.   
+
+*** Equation 2: Award_perf it = B0 + b1*female it.
+
+Specification (2) examined the relationship between gender and the number of awards nominations using the fixed effect model, controlling for cohorts and years. Column 2 yields a  (b1) of -4.368 which is 21% higher than the original paper results. At a 1% significance level,  This result indicates that on average, female officers get 4.4 fewer awards than male officers. Moreover, since male officers receive 10.2 awards nominations on average, female officers receive around 43% fewer awards than their male counterparts. 
+
+Specification (3) shows the effect of race and gender on the number of awards nominations using the fixed effect model, controlling for cohorts and years. To reduce omitted variable bias and address endogeneity, we control for demographics( birth year, tenure) and police activities( total arrests, civilian complaints, and uses of forces). The original paper specified why some of these variables were added as they believe these variables correlated with the number of awards given. For example, older officers are more likely to be nominated because they have more experience in the field. Moreover, authors control for the number of arrests as they believe black officers are more likely to be assigned to black neighborhoods where there are more crimes, in which case they will have more arrests on their records. Therefore, by controlling for these variables, the analysis focuses only on the systemic issues of the internal police department. Specification (3)  yields a  (b1) of -3.801, which is 6% higher than the original paper's results, and a (b2) of -2.366, which is about 4% lower than the original paper’s results. The magnitudes of the coefficient after controlling for additional variables decrease which shows that there were omitted variable biases in the first 2 specifications. The result is statistically significant at 1% and indicates that on average, black male officers get 3.8 fewer awards than their white counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 32% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 2.4 awards less than white male officers on average which means they received around 20.4% fewer awards than white male officers on average. It also shows that black female officers on average receive 6.2 fewer awards than the white male officers which is 53% fewer awards than their male counterparts.
+
+*** Equation 4: Award_perf it = B0 + b1*female it +b2 black it + b3( female*black) it + (set of confounding variables.
+
+Specification (4) illustrates the regression of gender and race on the number of awards nominations using the same method and control variables as specification (3). However, an interaction term of black and female variables was added to see how the relationship between black and female affects awards nominations number.  Column 4 yields a  (b1) of -4.856, a (b2) of -3.227, and a b3 of 3.206 which is, respectively, 5% higher than, 3.4% lower than,5.7% higher than the original paper’s results. All coefficients are significant at the 1% level. Specification (4) indicates that on average, black male officers get 4.8 fewer awards than their white male counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 41% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 3.2 awards less than white male officers on average which means they received around 27% fewer awards than white male officers on average. It also shows that black female officers on average receive 4.8 fewer awards than the white male officers. We witnessed that the number of awards that black officers receives are around the same regardless of their gender. 
 
 
 
@@ -127,72 +109,17 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 ## Third discussion point
 
 ## Weaknesses and next steps
+There are multiple weaknesses of the research done throughout this paper. Because Chicago is a segregated city in terms of race and income, black officers are more likely to be assigned to black neighborhoods which have higher crime rates leading to higher award performance. Another is when the average start month is calculated after mapping each month to its numeric value, it is likely that the larger the number, it creates a distortion in the average due to the small range [1:12]. This may be the reason why the start month data is all averaged around July. 
+(please add further limiations/weaknesses from other sections that i dont know)
+For more accurate results it would be better to do further research using national officer data with similar characteristics.
 
-Weaknesses and next steps should also be included.
+# Conclusion
+In conclusion, this paper has explored how the replication of the tables and graphs are done, and if there are any disparities among gender or race. This was done using the dataset that was provided from the original paper  (Rim, Ba, and Rivera 2019b). The original paper has concluded that the analysis presents evidence of supervisors being biased against minority officers. However, through the further research that has been done, quite opposing results are presented. It is seen that there is a stronger correlation between black officers and award performance than white officers and award performance. … (please add the results of male and female here). Therefore, if we look at the whole CPD instead of only looking into unit 44, it is shown that supervisors may not be biased against minority officers, but for more accuracy it would be more plausible to do a similar research looking into the national officer data. 
 
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
 
 
 
 \newpage
-
 
 # References
 

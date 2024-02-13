@@ -1,4 +1,4 @@
-data <- read.csv("officer_year_data.csv")
+data <- read.csv("./data/officer_year_data.csv")
 
 library(tidyverse)
 library(plm)

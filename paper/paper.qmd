@@ -2,12 +2,13 @@
 title: "My title"
 subtitle: "My subtitle if needed"
 author: 
-  - First author
-  - Another author
+  - Thu Dong 
+  - Siddharth Arya 
+  - Hyuk Jang 
 thanks: "Code and data are available at: LINK."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -19,58 +20,35 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(tidyr)
+library(janitor)
+library(dplyr)
+library(readr)
+library(stringr)
 ```
 
 
-# Introduction
+# 1. Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+There have been many studies that focus on police-civilian interactions with racial disparities but there aren’t many looking into the racial disparities within the police departments. This paper uses the key metric of internal recognition among Chicago Police Department officers and its departmental award nominations. The departmental award nomination is the measure of performance in this paper as promotions are very rare in police departments; only 3 percent of police officers in CPD were promoted to sergeant during the period 2007 to 2015. To analyze the racial disparities among CPD, we made a database of CPD officers including the following variables: demographics, district assignments, civilian complaints, arrests, award performance, and Tactical Response Reports filings. This analysis will have implications on crime and community safety as a diverse police force may improve policing quality (Miller and Segal 2019).
 
-The remainder of this paper is structured as follows. @sec-data....
+The dataset was obtained from the American Economic Association (AEA 2022). The data was downloaded, simulated, cleaned, and analyzed using R (R Core Team 2020), ....(libraries that are used). Figures and tables were created using …(libraries).  
+
+The goal of this paper is to reproduce the original tables and graphs produced from the data with our own methodologies using R and expand on this to explore further on correlations between race and award performance in a specific district. The paper starts with a discussion of the data source and explains the methodologies used to replicate the tables and graphs of the original paper. Then, we will reproduce the selected results to confirm their findings and improve the accessibility of the data. The paper will conclude with a discussion of the findings in which we apply the methodologies used to find out the correlation between race, gender, and award performance. This research will help us find out if there are racial or gender disparities among CPD officers internally. The results show if there needs to be counterbalancing in promotion and advancement, considering the racial and sexual disparities. 
 
 
+# 2. Data {#sec-data}
+## 2.1. Data sources 
+The data of the characteristics of CPD is obtained from the original paper (Rim, Ba, and Rivera 2019b). This is the source of our raw data in which we clean to make the tables and graphs. The dataset contains demographics, rank, tenure, district assignment, awards, arrests, use of force measured by Tactical Response Reports filings, and complaints. The dataset is focused on the periods 2007 to 2015. For simplicity, we use the dataset the authors of the original paper have made and further clean, analyze it for replication and further research.  
 
-# Data {#sec-data}
-
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
-
+## 2.2. Summary statistics.
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
 ```
 
-Talk more about it.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+Table 1 is the replication of the summary statistics of the 1,715 probationary police officers while they were in the police academy. The table summarizes the baseline characteristics of new police officers from CPD. Characteristics from the original table and the reproduced Table 1 that are the same are birth year, start month, complaints, arrests, and observations. One difference is that the replicated table 1 doesn’t have the use of force and training. Instead, it includes award performance and Tactical Response Reports filings. This is because the original paper has used their function which makes the characteristic use of force by using award performance and Tactical Response Reports with different coefficients. Out of the whole dataset of CPD the reproduction data specifically uses the data of unit 44 to sample the whole CPD dataset.  
+To produce table 1, we must first extract the subset of CPD in which officers are in unit 44. Once the unit 44 data is extracted, we then merge the characteristic data based on their unique NUID (each unique police officer in CPD). After this is done, we can get the characteristics of “Everyone” in which we sum the characteristics and divide it by the observation which is the number of unique officers (NUID) we have. We round the averaged data to two decimal points like the original paper has done. The race and gender-specific data is obtained by similar methods, but the only difference is that we extract all the rows in the dataset unique NUID where white == 1, black == 1, male == 1, and female == 1. This then gives us 4 subsets of unique NUID with the characteristics of the four different categories we need to make the replicated summarized statistics. Finally, after we have the 5 datasets (“everyone, white, black, male, female”) we merge the datasets into one data frame and rename the columns and rows so that it looks almost identical to the summarized statistics. In between these steps, the start month must be modified for us to find the average start month. This is because the dataset contains the start month as a string like ‘Jan’, and ‘Feb’ and we need it to be in digits. Thus we must map the strings based on the month for example Jan == 1, …, Dec == 12. Once this step is done there will not be any NA that needs to be removed from the cleaned data. 
 
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
 
 
 

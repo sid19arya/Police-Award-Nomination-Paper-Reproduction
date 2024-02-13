@@ -211,3 +211,5 @@ organized_table_1 <- matrix(table_1, nrow = 7, ncol = 5)
 row.names(organized_table_1) <- c("birth year", "start month", "complaints", "arrests", "award performance", "trr new", "observation")
 colnames(organized_table_1) <- c("Everyone", "White", "Black", "Male", "Female")
 
+write.csv(organized_table_1, "data/analysis_data/table_1_data.csv")
+

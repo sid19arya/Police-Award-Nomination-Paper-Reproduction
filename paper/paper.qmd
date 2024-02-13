@@ -25,6 +25,7 @@ library(janitor)
 library(dplyr)
 library(readr)
 library(stringr)
+library(stargazer)
 ```
 
 
@@ -44,6 +45,7 @@ The data of the characteristics of CPD is obtained from the original paper (Rim,
 ## Summary statistics.
 ```{r}
 # run code in ***name of script
+organized_table_1 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_1_data.csv")
 organized_table_1
 ```
 
@@ -61,22 +63,10 @@ To produce table 1, we must first extract the subset of CPD in which officers ar
 #| warning: false
 #| message: false
  # run script **name 
-stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, 
-          omit =c("hisp", "asian", "natam", "birth_year", "tenure", "tenure2",
-          "tenure3", "L_cmpl_civ", "L_cmpl_civ2", "L_cmpl_civ3",
-          "L_arrest_total", "L_arrest_total2","L_arrest_total3","L_trr_new",
-          "L_trr_new2","L_trr_new3"),
-          omit.stat=c("f", "rsq","adj.rsq"),
-          add.lines=list(c("Control for"),
-                         c("Cohort", "Yes", "Yes", "Yes", "Yes"), 
-                         c("Year",  "Yes", "Yes", "Yes", "Yes"), 
-                         c("Demographics", " ", " ", "Yes", "Yes"),
-                         c("Policing activities", "", "", "Yes", "Yes"),
-                         c("Reference group mean",round(mean_white, digits = 2), 
-                           round(mean_female_0, digits = 2), 
-                           round(mean_white_female_0, digits = 2), 
-                           round(mean_white_female_0, digits = 2))), 
-          type = 'text')
+
+organized_table_2 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_2_data.csv")
+organized_table_2
+
 ```
 
 

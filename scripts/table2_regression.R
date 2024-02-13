@@ -68,7 +68,7 @@ mean_white_female_0 <- mean(data$awd_perf[data$white == 1
 
 #final table
 
-stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, 
+final_table <- stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, 
           omit =c("hisp", "asian", "natam", "birth_year", "tenure", "tenure2",
           "tenure3", "L_cmpl_civ", "L_cmpl_civ2", "L_cmpl_civ3",
           "L_arrest_total", "L_arrest_total2","L_arrest_total3","L_trr_new",
@@ -84,4 +84,6 @@ stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale,
                            round(mean_white_female_0, digits = 2), 
                            round(mean_white_female_0, digits = 2))), 
           type = 'text')
+
+write.csv(final_table, "data/analysis_data/table_2_data.csv")
 

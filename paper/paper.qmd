@@ -5,10 +5,10 @@ author:
   - Thu Dong 
   - Siddharth Arya 
   - Hyuk Jang 
-thanks: "Code and data are available at: LINK."
+thanks: "Code and data are available at: https://github.com/sid19arya/Police-Award-Nomination-Paper-Reproduction."
 date: today
 date-format: long
-abstract: "There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department."
+abstract: "There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department. Our research conveys that there is no disparities among CPD opposing the results from the original paper"
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -44,6 +44,7 @@ The data of the characteristics of CPD is obtained from the original paper (Rim,
 
 ## Summary statistics.
 ```{r}
+#| echo: false
 # run code in ***name of script
 organized_table_1 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_1_data.csv")
 organized_table_1
@@ -103,7 +104,7 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 ## Third discussion point
 
 ## Weaknesses and next steps
-There are multiple weaknesses of the research done throughout this paper. Because Chicago is a segregated city in terms of race and income, black officers are more likely to be assigned to black neighborhoods which have higher crime rates leading to higher award performance. Another is when the average start month is calculated after mapping each month to its numeric value, it is likely that the larger the number, it creates a distortion in the average due to the small range [1:12]. This may be the reason why the start month data is all averaged around July. 
+There are multiple weaknesses of the research done throughout this paper. Because Chicago is a segregated city in terms of race and income, black officers are more likely to be assigned to black neighborhoods which have higher crime rates leading to higher award performance. Another is when the average start month is calculated after mapping each month to its numeric value, it is likely that the larger the number, it creates a distortion in the average due to the small range [1:12]. This may be the reason why the start month data is all averaged around July instead of being exactly the same as the original summarized statistics.
 (please add further limiations/weaknesses from other sections that i dont know)
 For more accurate results it would be better to do further research using national officer data with similar characteristics.
 

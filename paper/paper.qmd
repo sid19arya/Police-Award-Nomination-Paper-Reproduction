@@ -8,7 +8,7 @@ author:
 thanks: "Code and data are available at: https://github.com/sid19arya/Police-Award-Nomination-Paper-Reproduction."
 date: today
 date-format: long
-abstract: "There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department. Our research conveys that there is no disparities among CPD opposing the results from the original paper"
+abstract: "There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department. Our research conveys that there is no disparities among CPD opposing the results from the original paper."
 format: pdf
 number-sections: true
 bibliography: references.bib

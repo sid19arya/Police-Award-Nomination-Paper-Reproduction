@@ -35,6 +35,7 @@ for (q in seq(0.2, 0.9, by = 0.05)) {
   fm_ub <- c(fm_ub, coef(model)["female"] + qt(0.025, df = 4045)[1] * summary(model)$coef["black", "Std. Error"])
 }
 
+# Collect value vectors to turn into dataframe
 bw <- c(rep(1, 15), rep(0, 15))
 fm <- c(rep(0,15), rep(1, 15))
 coef <- c(bw_b, fm_b)

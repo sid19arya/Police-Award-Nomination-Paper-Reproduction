@@ -10,21 +10,19 @@
 library(tidyverse)
 library(tibble)
 
-# Create a tibble with the provided summary statistics
+# Create a dataset with the provided summary statistics
 
 simulated_data <- tibble(
   id = 1:100,                       # Example: 100 rows
-  year = sample(2010:2020, 100, replace = TRUE),  # Example: random years between 2010 and 2020
-  birth_year = rnorm(100, mean = 1980, sd = 5),    # Example: random birth years
-  black = sample(c(0, 1), 100, replace = TRUE),    # Example: random binary values
-  white = sample(c(0, 1), 100, replace = TRUE),    # Example: random binary values
-  female = sample(c(0, 1), 100, replace = TRUE),   # Example: random binary values
-  awards_nomination = rpois(100, lambda = 5),      # Example: Poisson-distributed awards nominations
-  total_arrests = rpois(100, lambda = 20)          # Example: Poisson-distributed total arrests
+  year = sample(2010:2020, 100, replace = TRUE),  #  random years between 2010 and 2020
+  birth_year = rnorm(100, mean = 1980, sd = 5),    # random birth years
+  black = sample(c(0, 1), 100, replace = TRUE),    #  random binary values
+  white = sample(c(0, 1), 100, replace = TRUE),    # random binary values
+  female = sample(c(0, 1), 100, replace = TRUE),   # random binary values
+  awards_nomination = rpois(100, lambda = 5),      # poisson-distributed awards nominations
+  total_arrests = rpois(100, lambda = 20)          #poisson-distributed total arrests
 )
 
-# Print the simulated tibble
-print(simulated_data)
 
 #summary statistics 
 summary_stats <- tibble(
@@ -36,8 +34,6 @@ summary_stats <- tibble(
   Female = c(1980.6, 7.34, 0.37, 20.07, 6.21, 0.32, 346)
 )
 
-# Print the tibble
-print(summary_stats)
 
 
 

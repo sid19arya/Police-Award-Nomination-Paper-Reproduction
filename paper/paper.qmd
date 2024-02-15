@@ -1,5 +1,5 @@
 ---
-title: "Inquires in Racial and Sexual Disparities among Chicago Police Department"
+title: "Investigation into Racial and Sexual Bias against Officers within Chicago Police Departments"
 # subtitle: "My subtitle if needed"
 author: 
   - Thu Dong 
@@ -8,7 +8,7 @@ author:
 thanks: "Code and data are available at: https://github.com/sid19arya/Police-Award-Nomination-Paper-Reproduction. Replication on Social Science Reproduction platform available at: https://doi.org/10.48152/ssrp-5nym-9g31" 
 date: today
 date-format: long
-abstract: "Racial and Gender Disparities within police departments is an insufficiently investigated phenomenon. This paper replicates an investigation into racial and gender bias among officers within the Chicago Police Department and conducts further investigation into the discrimination faced by minority police officers in regard to receiving awards for their work. Although the replication portion finds convincing evidence of such discrimination, our investigations were inconclusive in the matter. In any case, this appears to motivate the police department to counterbalance promotion and advancement to control such disparities."
+abstract: "Racial and Gender Disparities within police departments is an insufficiently investigated phenomenon. This paper replicates an investigation into racial and gender bias among officers within the Chicago Police Department and conducts further investigation into the discrimination faced by minority police officers in regard to the quantity of award nominations they recieve. Although the replication portion finds convincing evidence of such discrimination, our investigations were inconclusive in the matter. In any case, this appears to motivate the police department to counterbalance promotion and advancement to control such disparities."
 format: pdf
 toc: true
 number-sections: true
@@ -192,7 +192,7 @@ Table 2 depicts the results of a regression analysis between the demographics of
 
 Specification (1) shows the regression of race, including Black, Asian, Hispanic, and Native Americans, on awards nominations controlling for cohorts and years, based on the equation below. 
 
-$$ 
+$$
 \text{Award-perf}_{it} = \beta_0 + \beta_1 \text{Black}_{it} + \beta_2 \text{Hisp}_{it} + \beta_3 \text{Asian}_{it} + \beta_4 \text{Natam}_{it} + e_{it}
 $$
 Based on the equation below, specification (2) examines the relationship between gender and total award nominations controlling for cohort and years. 

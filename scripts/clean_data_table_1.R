@@ -7,10 +7,12 @@ library(stringr)
 
 officer_year_data <- read_csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_year_data.csv")
 officer_month_data <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_month_data.csv")
-
+# Get the characteristic data of officers in unit 44
 unit44_data <- officer_month_data[officer_month_data$unit == 44, ]
+# Extract characteristic data of unique police officer in unit 44
 unique_nuid <- unit44_data |>
   distinct(nuid, .keep_all = TRUE)
+# clean data for "Everyone" column
 total_observations <- nrow(unique_nuid) 
 total_birth_year <- sum(unique_nuid$birth_year, na.rm = TRUE)
 avg_birth_year <- round(total_birth_year / total_observations, digits = 2)
@@ -22,7 +24,7 @@ total_trr_new <- sum(unit44_data$trr_new, na.rm = TRUE)
 avg_trr_new <- round(total_trr_new / total_observations, digits = 2)
 total_awd_perf <- sum(unit44_data$awd_perf, na.rm = TRUE)
 avg_awd_perf <- round(total_awd_perf / total_observations, digits = 2)
-
+# Month mapping from string to integer
 unique_nuid$start_month <- as.character(unique_nuid$start_month)
 start_date <- unique_nuid$start_month
 processed_start_date <- str_match(start_date, "^(\\d{2})([a-zA-Z]{3})(\\d{4})$")
@@ -37,7 +39,7 @@ processed_start_month <- as.integer(processed_start_month)
 total_start_month <- sum(processed_start_month)
 avg_start_month <- round(total_start_month / total_observations, digits = 2)
 
-
+# Make the cleaned data into table
 Everyone <- data.frame(
   Birth_year <- avg_birth_year,
   start_month <- paste(avg_start_month, avg_start_year, sep = " "),
@@ -48,19 +50,22 @@ Everyone <- data.frame(
   Observations <- total_observations
 )
 
+# Cleaning data for "Female"
 female_observation <- nrow(unique_nuid[unique_nuid$female == 1, ])
 female_data <- unit44_data[unit44_data$female == 1, ] 
+# Total of the selected columns we want for "Female"
 tfemale_birth_year <- sum(unique_nuid[unique_nuid$female == 1, ]$birth_year, na.rm = TRUE)
 tfemale_complaints <- sum(female_data$cmpl_civ, na.rm = TRUE)
 tfemale_arrests <- sum(female_data$arrest, na.rm = TRUE)
 tfemale_trr_new <- sum(female_data$trr_new, na.rm = TRUE)
 tfemale_awd_perf <- sum(female_data$awd_perf, na.rm = TRUE)
+# Average of the selected columns we want for "Female"
 afemale_birth_year <- round(tfemale_birth_year / female_observation, digit = 2)
 afemale_complaints <- round(tfemale_complaints / female_observation, digit = 2)
 afemale_arrests <- round(tfemale_arrests / female_observation, digit = 2)
 afemale_trr_new <- round(tfemale_trr_new / female_observation, digit = 2)
 afemale_awd_perf <- round(tfemale_awd_perf / female_observation, digit = 2)
-
+# Month mapping
 female_date <- as.character(unique_nuid[unique_nuid$female == 1, ]$start_month)
 fstart_date <- data.frame(female_date, start_month)
 fprocessed_start_date <- str_match(fstart_date$female_date, "^(\\d{2})([a-zA-Z]{3})(\\d{4})$")
@@ -76,6 +81,7 @@ fprocessed_start_month <- as.integer(fprocessed_start_month)
 ftotal_start_month <- sum(fprocessed_start_month)
 favg_start_month <- round(ftotal_start_month / female_observation, digit = 2)
 
+# Making the cleaned "Female" data to a table
 clean_female_data <- data.frame(
   birth_year <- afemale_birth_year,
   start_month <- paste(favg_start_month, favg_start_year, sep = " "),
@@ -86,19 +92,23 @@ clean_female_data <- data.frame(
   observations <- female_observation
 )
 
+# Cleaning data for "Male"
 male_observation <- nrow(unique_nuid[unique_nuid$female != 1, ])
 male_data <- unit44_data[unit44_data$female != 1, ] 
+# Total of the columns we need for "Male"
 tmale_birth_year <- sum(unique_nuid[unique_nuid$female != 1, ]$birth_year, na.rm = TRUE)
 tmale_complaints <- sum(male_data$cmpl_civ, na.rm = TRUE)
 tmale_arrests <- sum(male_data$arrest, na.rm = TRUE)
 tmale_trr_new <- sum(male_data$trr_new, na.rm = TRUE)
 tmale_awd_perf <- sum(male_data$awd_perf, na.rm = TRUE)
+# Average of the columns we need for "Male"
 amale_birth_year <- round(tmale_birth_year / male_observation, digit = 2)
 amale_complaints <- round(tmale_complaints / male_observation, digit = 2)
 amale_arrests <- round(tmale_arrests / male_observation, digit = 2)
 amale_trr_new <- round(tmale_trr_new / male_observation, digit = 2)
 amale_awd_perf <- round(tmale_awd_perf / male_observation, digit = 2)
 
+# Month mapping for "Male"
 male_date <- as.character(unique_nuid[unique_nuid$female != 1, ]$start_month)
 mstart_date <- data.frame(male_date, start_month)
 mprocessed_start_date <- str_match(mstart_date$male_date, "^(\\d{2})([a-zA-Z]{3})(\\d{4})$")
@@ -113,6 +123,7 @@ mprocessed_start_month <- month_mapping[mprocessed_start_date$X3]
 mprocessed_start_month <- as.integer(mprocessed_start_month)
 mtotal_start_month <- sum(mprocessed_start_month)
 mavg_start_month <- round(mtotal_start_month / male_observation, digit = 2)
+# Make cleaned "Male" data into a table
 clean_male_data <- data.frame(
   birth_year <- amale_birth_year,
   start_month <- paste(mavg_start_month, mavg_start_year, sep = " "),
@@ -123,19 +134,22 @@ clean_male_data <- data.frame(
   observations <- male_observation
 )
 
+# Cleaning data for "White"
 white_observation <- nrow(unique_nuid[unique_nuid$white == 1, ])
 white_data <- unit44_data[unit44_data$white == 1, ] 
+# Total of the columns we need for "White"
 twhite_birth_year <- sum(unique_nuid[unique_nuid$white == 1, ]$birth_year, na.rm = TRUE)
 twhite_complaints <- sum(white_data$cmpl_civ, na.rm = TRUE)
 twhite_arrests <- sum(white_data$arrest, na.rm = TRUE)
 twhite_trr_new <- sum(white_data$trr_new, na.rm = TRUE)
 twhite_awd_perf <- sum(white_data$awd_perf, na.rm = TRUE)
+# Average of the columns we need for "White"
 awhite_birth_year <- round(twhite_birth_year / white_observation, digit = 2)
 awhite_complaints <- round(twhite_complaints / white_observation, digit = 2)
 awhite_arrests <- round(twhite_arrests / white_observation, digit = 2)
 awhite_trr_new <- round(twhite_trr_new / white_observation, digit = 2)
 awhite_awd_perf <- round(twhite_awd_perf / white_observation, digit = 2)
-
+# Month Mapping for "White"
 white_date <- as.character(unique_nuid[unique_nuid$white == 1, ]$start_month)
 wstart_date <- data.frame(white_date, start_month)
 wprocessed_start_date <- str_match(wstart_date$white_date, "^(\\d{2})([a-zA-Z]{3})(\\d{4})$")
@@ -150,7 +164,7 @@ wprocessed_start_month <- month_mapping[wprocessed_start_date$X3]
 wprocessed_start_month <- as.integer(wprocessed_start_month)
 wtotal_start_month <- sum(wprocessed_start_month)
 wavg_start_month <- round(wtotal_start_month / white_observation, digit = 2)
-
+# Making cleaned white data into a table
 clean_white_data <- data.frame(
   birth_year <- awhite_birth_year,
   start_month <- paste(wavg_start_month, wavg_start_year, sep = " "),
@@ -160,20 +174,22 @@ clean_white_data <- data.frame(
   trr_new <- awhite_trr_new,
   observations <- white_observation
 )
-
+# Cleaning data for "Black"
 black_observation <- nrow(unique_nuid[unique_nuid$black == 1, ])
 black_data <- unit44_data[unit44_data$black == 1, ] 
+# Total of the columns we need for "Black"
 tblack_birth_year <- sum(unique_nuid[unique_nuid$black == 1, ]$birth_year, na.rm = TRUE)
 tblack_complaints <- sum(black_data$cmpl_civ, na.rm = TRUE)
 tblack_arrests <- sum(black_data$arrest, na.rm = TRUE)
 tblack_trr_new <- sum(black_data$trr_new, na.rm = TRUE)
 tblack_awd_perf <- sum(black_data$awd_perf, na.rm = TRUE)
+# Average of the columns we need for "Black"
 ablack_birth_year <- round(tblack_birth_year / black_observation, digit = 2)
 ablack_complaints <- round(tblack_complaints / black_observation, digit = 2)
 ablack_arrests <- round(tblack_arrests / black_observation, digit = 2)
 ablack_trr_new <- round(tblack_trr_new / black_observation, digit = 2)
 ablack_awd_perf <- round(tblack_awd_perf / black_observation, digit = 2)
-
+# Month Mapping for "Black"
 black_date <- as.character(unique_nuid[unique_nuid$black == 1, ]$start_month)
 bstart_date <- data.frame(black_date, start_month)
 bprocessed_start_date <- str_match(bstart_date$black_date, "^(\\d{2})([a-zA-Z]{3})(\\d{4})$")
@@ -188,7 +204,7 @@ bprocessed_start_month <- month_mapping[bprocessed_start_date$X3]
 bprocessed_start_month <- as.integer(bprocessed_start_month)
 btotal_start_month <- sum(bprocessed_start_month)
 bavg_start_month <- round(btotal_start_month / black_observation, digit = 2)
-
+# Making cleaned "Black" data into a table
 clean_black_data <- data.frame(
   birth_year <- ablack_birth_year,
   start_month <- paste(bavg_start_month, bavg_start_year, sep = " "),
@@ -199,7 +215,7 @@ clean_black_data <- data.frame(
   observations <- black_observation
 )
 
-
+# Creating a new table with "Everyone", "White", "Black", "Male", "Female"
 table_1 <- data.frame(
   everyone <- Everyone,
   white <- clean_white_data,
@@ -207,6 +223,7 @@ table_1 <- data.frame(
   male <- clean_male_data,
   female <- clean_female_data
 )
+# Making the table into a matrix to transpose it
 organized_table_1 <- matrix(table_1, nrow = 7, ncol = 5)
 row.names(organized_table_1) <- c("birth year", "start month", "complaints", "arrests", "award performance", "trr new", "observation")
 colnames(organized_table_1) <- c("Everyone", "White", "Black", "Male", "Female")

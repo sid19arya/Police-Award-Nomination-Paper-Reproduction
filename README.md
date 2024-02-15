@@ -1,10 +1,8 @@
-# Starter folder
+# Police Award Nomination Paper Reproduction
 
 ## Overview
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
-
-To use this folder, click the green "Code" button", then "Download ZIP". Move the downloaded folder to where you want to work on your own computer, and then modify it to suit.
+There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department. Our research conveys that there is no disparities among CPD; opposing the results from the original paper.
 
 
 ## File Structure
@@ -21,4 +19,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in inputs/llms/usage.txt.
+No LLM's were used throughout the whole paper to aid with the coding nor the writing aspect.

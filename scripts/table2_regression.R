@@ -66,6 +66,13 @@ mean_white_female_0 <- mean(data$awd_perf[data$white == 1
 
 
 
+saveRDS(fe_reg_black, file = "data/analysis_data/fe_reg_black.rds")
+saveRDS(fe_reg_female, file = "data/analysis_data/fe_reg_female.rds")
+saveRDS(fe_reg_black_female, file = "data/analysis_data/fe_reg_black_female.rds")
+saveRDS(fe_reg_blackxfemale, file = "data/analysis_data/fe_reg_blackxfemale.rds")
+
+
+
 #final table
  stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, header=FALSE,
           omit =c("hisp", "asian", "natam", "birth_year", "tenure", "tenure2",

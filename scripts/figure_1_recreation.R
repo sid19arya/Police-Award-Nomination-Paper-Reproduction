@@ -1,6 +1,12 @@
 library(tidyverse)
 library(quantreg)
 
+
+# _b stands for just the coefficeint
+# _se is the standard error
+# _lb is the lower bound for the coefficient
+# _ub is the upper bound for the coefficinet
+# bw and fm record these values for black and female demographics respecitvely
 bw_b <- c()
 bw_se <- c()
 bw_lb <- c()
@@ -10,12 +16,14 @@ fm_se <- c()
 fm_lb <- c()
 fm_ub <- c()
 
+# Save relevant information for both demographics - and different quantiles.
 for (q in seq(0.2, 0.9, by = 0.05)) {
+  
   # Perform quantile regression
   model <- rq(awd_perf ~ black + female + hisp + asian + natam + 
                 birth_year + tenure + tenure2 + tenure3 + year + 
                 group, data = data, tau = q)
-  # These couple lines need to be fixed!
+
   bw_b <- c(bw_b, coef(model)["black"])
   bw_se <- c(bw_se, summary(model)$coef["black", "Pr(>|t|)"])
   bw_lb <- c(bw_lb, coef(model)["black"] - qt(0.025, df = 4045)[1] * summary(model)$coef["black", "Std. Error"])

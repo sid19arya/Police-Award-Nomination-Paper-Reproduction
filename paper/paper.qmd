@@ -1,15 +1,16 @@
 ---
 title: "Inquires in Racial and Sexual Disparities among Chicago Police Department"
-subtitle: "My subtitle if needed"
+# subtitle: "My subtitle if needed"
 author: 
   - Thu Dong 
   - Siddharth Arya 
   - Hyuk Jang 
-thanks: "Code and data are available at: https://github.com/sid19arya/Police-Award-Nomination-Paper-Reproduction."
+thanks: "Code and data are available at: https://github.com/sid19arya/Police-Award-Nomination-Paper-Reproduction. Replication on Social Science Reproduction platform available at: https://doi.org/10.48152/ssrp-5nym-9g31" 
 date: today
 date-format: long
-abstract: "There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department. Our research conveys that there is no disparities among CPD opposing the results from the original paper."
+abstract: "Racial and Gender Disparities within police departments is an insufficiently investigated phenomenon. This paper replicates an investigation into racial and gender bias among officers within the Chicago Police Department and conducts further investigation into the discrimination faced by minority police officers in regard to receiving awards for their work. Although the replication portion finds convincing evidence of such discrimination, our investigations were inconclusive in the matter. In any case, this appears to motivate the police department to counterbalance promotion and advancement to control such disparities."
 format: pdf
+toc: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -27,40 +28,40 @@ library(readr)
 library(stringr)
 library(stargazer)
 library(kableExtra)
-library(gtsummary)
+library(plm)
 ```
 
 
 # Introduction
 
-There have been many studies that focus on police-civilian interactions with racial disparities but there aren’t many looking into the racial disparities within the police departments. This paper uses the key metric of internal recognition among Chicago Police Department officers and its departmental award nominations. The departmental award nomination is the measure of performance in this paper as promotions are very rare in police departments; only 3 percent of police officers in CPD were promoted to sergeant during the period 2007 to 2015. To analyze the racial disparities among CPD, we made a database of CPD officers including the following variables: demographics, district assignments, civilian complaints, arrests, award performance, and Tactical Response Reports filings. This analysis will have implications on crime and community safety as a diverse police force may improve policing quality (Miller and Segal 2019).
+There have been many studies that focus on police-civilian interactions with racial disparities but limited research looking into the racial disparities within the police departments. This paper uses the key metric of internal recognition among Chicago Police Department (CPD) officers and its departmental award nominations. The departmental award nomination is chosen as the measure of performance in this paper as actual promotions are very rare in police departments and would be a limiting choice; only 3 percent of police officers in CPD were promoted to sergeant during the period 2007 to 2015. Using this as the metric of interest, we examine evidence regarding racial and gender disparities within the CPD. We do so through he use of a database of information on CPD officers including the following information: demographics, district assignments, civilian complaints, arrests, award performance, and Tactical Response Reports filings. This analysis will have implications on crime and community safety as a diverse police force may improve policing quality [@Miller2018].
 
-The dataset was obtained from the American Economic Association (AEA 2022). The data was downloaded, simulated, cleaned, and analyzed using R (R Core Team 2020), Tidyverse, Tidyr, Janitor, Dplyr, Readr, and Stringr. Figures and tables were created using Rstanarm, Plm, Lmtest, Sandwich, and Stargazer.  
+The dataset was obtained from the American Economic Association (AEA 2022). The data was downloaded, simulated, cleaned, and analyzed using R [@citeR], Tidyverse [@tidyverse], Tidyr[@tidyr], Janitor[@janitor], Dplyr[@dplyr], Readr[@readr], and Stringr[@stringr]. Figures and tables were created using Rstanarm[@rstanarm], Plm[@rstanarm], Lmtest[@lmtest], Sandwich[@sandwich], and Stargazer[@stargazer].  
 
-The goal of this paper is to reproduce the original tables and graphs produced from the data with our own methodologies using R and expand on this to explore further on correlations between race and award performance in a specific district. The paper starts with a discussion of the data source and explains the methodologies used to replicate the tables and graphs of the original paper. Then, we will reproduce the selected results to confirm their findings and improve the accessibility of the data. The paper will conclude with a discussion of the findings in which we apply the methodologies used to find out the correlation between race, gender, and award performance. This research will help us find out if there are racial or gender disparities among CPD officers internally. The results show if there needs to be counterbalancing in promotion and advancement, considering the racial and sexual disparities. 
+The goal of this paper investigate the evidence of racial and gender-based discrimination faced by minority group police officers - as a reproduction from an extension of Rim, Ba, and Rivera’s findings on the same subject [@ogpaper]. The paper starts with a discussion of the data source and explains the methodologies used to replicate the tables and graphs of the original paper. Then, we will reproduce the selected results to confirm their findings and improve the accessibility of the data. The paper will conclude with a discussion of the findings in which we apply the methodologies used to find out the correlation between race, gender, and award performance. This research will help us find out if there are racial or gender disparities among CPD officers internally. The results of the research will discuss if there needs to be counterbalancing in promotion and advancement, considering the racial and sexual disparities.  
 
 
 # Data {#sec-data}
+
 ## Data sources 
-The data of the characteristics of CPD is obtained from the original paper (Rim, Ba, and Rivera 2019b). This is the source of our raw data in which we clean to make the tables and graphs. The data set contains demographics, rank, tenure, district assignment, awards, arrests, use of force measured by Tactical Response Reports filings, and complaints. The dataset is focused on the periods 2007 to 2015. For simplicity, we use the data set the authors of the original paper have made and further clean, analyze it for replication and further research.  
+The data of the characteristics of CPD is obtained from the original paper [@ogpaper]. The data is already reasonably clean, we minimally process it further to create the desired Tables and Figures. The dataset contains demographics, rank, tenure, district assignment, awards, arrests, use of force measured by Tactical Response Reports filings, and complaints. The data set is focused on the period 2007 to 2015. For simplicity, we use the dataset the authors of the original paper have made and further clean, and analyze it for replication and further research.  
 
 ## Summary statistics.
 ```{r}
-#| label: tabl-one
+#| label: tbl-one
 #| echo: false
 #| warning: false
 #| message: false
+#| tbl-cap: "Summary Statistics for CPD Officer Data"
 # run code in ***name of script
 organized_table_1 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_1_data.csv")
 
-# stargazer(organized_table_1[,], type='latex')
-
-kable(organized_table_1, "latex", booktabs = TRUE, caption = "Summary Statistics for My Data") %>%
+kable(organized_table_1, "latex", booktabs = TRUE) %>%
   kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
 
-Table 1 is the replication of the summary statistics of the 1,715 probationary police officers while they were in the police academy. The table summarizes the baseline characteristics of new police officers from CPD. Characteristics from the original table and the reproduced Table 1 that are the same are birth year, start month, complaints, arrests, and observations. One difference is that the replicated table 1 doesn’t have the use of force and training. Instead, it includes award performance and Tactical Response Reports filings. This is because the original paper has used their function which makes the characteristic use of force by using award performance and Tactical Response Reports with different coefficients. Out of the whole data set of CPD the reproduction data specifically uses the data of unit 44 to sample the whole CPD data set.  
+@tbl-one is the replication of the summary statistics of the 1,715 probationary police officers while they were in the police academy. The table summarizes the baseline characteristics of new police officers from CPD. Characteristics from the original table and the reproduced Table 1 that are the same are birth year, start month, complaints, arrests, and observations. One difference is that the replicated table 1 doesn’t have the use of force and training. Instead, it includes award performance and Tactical Response Reports filings. This is because the original paper has used their function which makes the characteristic use of force by using award performance and Tactical Response Reports with different coefficients. Out of the whole data set of CPD the reproduction data specifically uses the data of unit 44 to sample the whole CPD data set.  
 
 To produce table 1, we must first extract the subset of CPD in which officers are in unit 44. Once the unit 44 data is extracted, we then merge the characteristic data based on their unique NUID (each unique police officer in CPD). After this is done, we can get the characteristics of “Everyone” in which we sum the characteristics and divide it by the observation which is the number of unique officers (NUID) we have. We round the averaged data to two decimal points like the original paper has done. The race and gender-specific data is obtained by similar methods, but the only difference is that we extract all the rows in the dataset unique NUID where white == 1, black == 1, male == 1, and female == 1. This then gives us 4 subsets of unique NUID with the characteristics of the four different categories we need to make the replicated summarized statistics. Finally, after we have the 5 data sets (“everyone, white, black, male, female”) we merge the data sets into one data frame and rename the columns and rows so that it looks almost identical to the summarized statistics. In between these steps, the start month must be modified for us to find the average start month. This is because the dataset contains the start month as a string like ‘Jan’, and ‘Feb’ and we need it to be in digits. Thus we must map the strings based on the month for example Jan == 1, …, Dec == 12. Once this step is done there will not be any NA that needs to be removed from the cleaned data. 
 
@@ -68,16 +69,32 @@ The summary statistics show that the average birth year of unit 44 in CPD is 198
 
 # Results
 
-## Disparities in police awards 
 ```{r}
-#| label: tabl-two
 #| echo:  false
 #| warning: false
 #| message: false
 # run script table_2_regression in script file first
 # regression table
 
- stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, header=FALSE,
+data <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_year_data.csv")
+
+# Sum awd_perf if white == 1
+mean_white <- mean(data$awd_perf[data$white == 1], na.rm = TRUE)
+
+# Sum awd_perf if female == 0
+mean_female_0 <- mean(data$awd_perf[data$female == 0], na.rm = TRUE)
+
+# Sum awd_perf if white == 1 & female == 0
+mean_white_female_0 <- mean(data$awd_perf[data$white == 1 
+                                             & data$female == 0], 
+                          na.rm = TRUE)
+
+fe_reg_black <- readRDS("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/fe_reg_black.rds")
+fe_reg_female <- readRDS("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/fe_reg_female.rds")
+fe_reg_black_female <- readRDS("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/fe_reg_black_female.rds")
+fe_reg_blackxfemale <- readRDS("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/fe_reg_blackxfemale.rds")
+
+stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, header=FALSE,
           omit =c("hisp", "asian", "natam", "birth_year", "tenure", "tenure2",
           "tenure3", "L_cmpl_civ", "L_cmpl_civ2", "L_cmpl_civ3",
           "L_arrest_total", "L_arrest_total2","L_arrest_total3","L_trr_new",
@@ -92,44 +109,15 @@ The summary statistics show that the average birth year of unit 44 in CPD is 198
                            round(mean_female_0, digits = 2), 
                            round(mean_white_female_0, digits = 2), 
                            round(mean_white_female_0, digits = 2))), 
-          type = 'text', star.cutoffs = NA, omit.table.layout = "n")
+          type ='text', star.cutoffs = NA, omit.table.layout = "n", title = "Table 2: Regression Analysis Summary", align=TRUE)
 ```
-
-$$ 
-\text{Award_perf}_{it} = \beta_0 + \beta_1 \text{Black}_{it} + \beta_2 \text{Hisp}_{it} + \beta_3 \text{Asian}_{it} + \beta_4 \text{Natam}_{it} + e_{it}
-$$
-$$
-\text{Award_perf}_{it} = \beta_0 + \beta_1 \text{female}_{it}
-$$
-
-$$
-\text{Award_perf}_{it} = \beta_0 + \beta_1 \text{Black}_i + \beta_2 \text{Female}_i + \beta_3 \text{Black}\times\text{Female}_{it} + \text{other confounding variables}
-$$
-
-(Table 2) is the replication of Table 2 in the original paper, and it shows the regressions of the variables black and female on the total awards nomination with 4 specifications. The result of the replication is slightly different than the result in the paper as the author took an estimate of the sample in the data set without specifying which estimates. Using this method gave the author only 4057 observations out of 5775 observations. However, the results when we use the entire data set are close to the original paper and we come to the same conclusion. 
-
-*** equation 1: Award_perf it = b0 + b1black it +  b2 hisp it + b3 asian it + b4natam it + e it ( e is error term)
-
-Specification (1) displayed the regression of race on the number of awards nominations. Since the data set is panel data, the fixed effect method was used in the analysis to control for some individual-specific characteristics that don’t change over time which helped to control for some unobserved factors to address potential endogenity. Specification (1) controls for “cohort” which is defined as all officers who start in the same district in the same quarter and years. Column 1 yields a  (b1) of -6.217 which is 17% higher than the original paper results. This result is statistically significant at 1% and indicates that on average, black officers get 6.2 fewer awards than their white counterparts. With the average awards white officers received of 10.8 awards, black officers received 56.7% fewer awards than white officers.   
-
-*** Equation 2: Award_perf it = B0 + b1*female it.
-
-Specification (2) examined the relationship between gender and the number of awards nominations using the fixed effect model, controlling for cohorts and years. Column 2 yields a  (b1) of -4.368 which is 21% higher than the original paper results. At a 1% significance level,  This result indicates that on average, female officers get 4.4 fewer awards than male officers. Moreover, since male officers receive 10.2 awards nominations on average, female officers receive around 43% fewer awards than their male counterparts. 
-
-Specification (3) shows the effect of race and gender on the number of awards nominations using the fixed effect model, controlling for cohorts and years. To reduce omitted variable bias and address endogeneity, we control for demographics( birth year, tenure) and police activities( total arrests, civilian complaints, and uses of forces). The original paper specified why some of these variables were added as they believe these variables correlated with the number of awards given. For example, older officers are more likely to be nominated because they have more experience in the field. Moreover, authors control for the number of arrests as they believe black officers are more likely to be assigned to black neighborhoods where there are more crimes, in which case they will have more arrests on their records. Therefore, by controlling for these variables, the analysis focuses only on the systemic issues of the internal police department. Specification (3)  yields a  (b1) of -3.801, which is 6% higher than the original paper's results, and a (b2) of -2.366, which is about 4% lower than the original paper’s results. The magnitudes of the coefficient after controlling for additional variables decrease which shows that there were omitted variable biases in the first 2 specifications. The result is statistically significant at 1% and indicates that on average, black male officers get 3.8 fewer awards than their white counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 32% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 2.4 awards less than white male officers on average which means they received around 20.4% fewer awards than white male officers on average. It also shows that black female officers on average receive 6.2 fewer awards than the white male officers which is 53% fewer awards than their male counterparts.
-
-*** Equation 4: Award_perf it = B0 + b1*female it +b2 black it + b3( female*black) it + (set of confounding variables.
-
-Specification (4) illustrates the regression of gender and race on the number of awards nominations using the same method and control variables as specification (3). However, an interaction term of black and female variables was added to see how the relationship between black and female affects awards nominations number.  Column 4 yields a  (b1) of -4.856, a (b2) of -3.227, and a b3 of 3.206 which is, respectively, 5% higher than, 3.4% lower than,5.7% higher than the original paper’s results. All coefficients are significant at the 1% level. Specification (4) indicates that on average, black male officers get 4.8 fewer awards than their white male counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 41% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 3.2 awards less than white male officers on average which means they received around 27% fewer awards than white male officers on average. It also shows that black female officers on average receive 4.8 fewer awards than the white male officers. We witnessed that the number of awards that black officers receives are around the same regardless of their gender.
-
-
-## New work to be added... 
 
 ```{r}
 #| label: fig-one
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-cap: "Racial and Gender Discrimination at different Quantile of Award Nominations"
 C_df <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/figure_1_data.csv")
 
 
@@ -151,7 +139,7 @@ ggplot(C_df, aes(x = qtile, y = coef, color = ifelse(bw == 1, "Black-White Gap",
 #| echo: false
 #| warning: false
 #| message: false
-#| 
+#| fig-cap: "Comparison of Arrest Total and AWD Performance (Black and White)"
 officers = read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_year_data.csv")
 black_officers = officers[officers$black == 1,]
 white_officers = officers[officers$white == 1,]
@@ -162,8 +150,7 @@ combined_data <- rbind(black_officers, white_officers)
 ggplot(combined_data, aes(x = arrest_total, y = awd_perf, color = group)) +
   geom_point(alpha = 0.3) +  # Adjust alpha for transparency
   geom_smooth(method = "lm", se = FALSE) +  # Add lines of best fit
-  labs(title = "Comparison of Arrest Total and AWD Performance",
-       x = "Arrest Total",
+  labs(x = "Arrest Total",
        y = "Award Nominations") +
   scale_color_manual(values = c("Black Officers" = "red", "White Officers" = "blue")) +  # Set colors
   theme_minimal()
@@ -171,11 +158,13 @@ ggplot(combined_data, aes(x = arrest_total, y = awd_perf, color = group)) +
 # Correlation for blakc officers: 0.601
 # Correlation for white officers:0.53
 ```
+
 ```{r}
 #| label: fig-three
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-cap: "Comparison of Arrest Total and AWD Performance (Male-Female)"
 male_officers = officers[officers$female == 0,]
 
 female_officers = officers[officers$female == 1,]
@@ -187,8 +176,7 @@ combined_data <- rbind(male_officers, female_officers)
 ggplot(combined_data, aes(x = arrest_total, y = awd_perf, color = group)) +
   geom_point(alpha = 0.3) +  # Adjust alpha for transparency
   geom_smooth(method = "lm", se = FALSE) +  # Add lines of best fit
-  labs(title = "Comparison of Arrest Total and AWD Performance",
-       x = "Arrest Total",
+  labs(x = "Arrest Total",
        y = "Award Nominations") +
   scale_color_manual(values = c("Male Officers" = "red", "Female Officers" = "blue")) +  # Set colors
   theme_minimal()
@@ -198,28 +186,73 @@ ggplot(combined_data, aes(x = arrest_total, y = awd_perf, color = group)) +
 # Correlation for white officers:0.520
 ```
 
--> Correlation between awards and arrests for black and white officers separately, to draw inferences towards whether race plays a factor in good performance being rewarded
--> findings: Yes, but not in a way that biases against minorities. 0.6 and 0.5 correlation from black and white respectively. 
+## Regression of race and gender on total awards nominations
+
+Table 2 depicts the results of a regression analysis between the demographics of police officers and the amount of awards and nominations received. This table is a replication of an equivalent table in the original paper and shows the regressions of the variables black and female on the total awards nomination with 4 specifications. The result of the replication is slightly different than the result in the paper as the author took an estimate of the sample in the data set without specifying which estimates. Using this method gave the author only 4057 observations out of 5775 observations. However, the results when we use the entire data set are close to the original paper and we come to the same conclusion. 
+
+Specification (1) shows the regression of race, including Black, Asian, Hispanic, and Native Americans, on awards nominations controlling for cohorts and years, based on the equation below. 
+
+$$ 
+\text{Award-perf}_{it} = \beta_0 + \beta_1 \text{Black}_{it} + \beta_2 \text{Hisp}_{it} + \beta_3 \text{Asian}_{it} + \beta_4 \text{Natam}_{it} + e_{it}
+$$
+Based on the equation below, specification (2) examines the relationship between gender and total award nominations controlling for cohort and years. 
+
+
+$$
+\text{Award-perf}_{it} = \beta_0 + \beta_1 \text{female}_{it}
+$$
+
+Specification (3) then examines the relationship between gender, race, and total award nominations with control of dome confounding variables police activity and demographics. Finally, specification (4) shows the regression of gender and race on awards nominations with the same control variables as the previous specification. This specification specifically includes the interaction terms. The equation will be shown below. The results of this regression will be examined in the discussion section. 
+
+$$
+\text{Award-perf}_{it} = \beta_0 + \beta_1 \text{Black}_i + \beta_2 \text{Female}_i + \beta_3 \text{Black}\times\text{Female}_{it} + \text{other confounding variables}
+$$
+
+## Bias across different levels of performance 
+
+@fig-one, depicts a quantile regression on every quantile between the twentieth and ninetieth percentile of annual award nominations, following the original paper. As the quantile increases, the gap between the number of award nominations between the minority group( black and/or female) and the majority group( while and/or male) gets wider. In other words, in the highest quantiles, the bias against the minority group increases. Specifically, in the twentieth percentile, while black people receive 0.997 fewer awards on average compared to white officers, female officers receive 1.08 fewer awards than their male counterparts. In the fiftyth percentile, the black-white gap is -2.31 and the female-male gap is also approximately -2.31 which means they receive significantly fewer nominations when they perform better. Moreover, in the ninetyth percentile, the recognition for the work of black and female officers reduces even more, as black officers get 4.78 fewer awards than their white counterparts and female officers get -4.77 fewer awards than the male officers. 
+
+## Recognition of Work for Officers
+
+
+Next, building on the research laid out in the original paper, we extend it to investigate a new, connected claim: whether the work of officers of minority groups are less recognized and rewarded for their work. To investigate this claim we observe the correlation between the number of arrests made (a measure of ‘work’) and the number of award nominations (a measure of reward), for officers of different demographics.
+
+@fig-two is the scatterplot that illustrates the correlation between the total number of arrests and the total number of awards nominations of 2 groups black and white. Overall, there could be a positive linear relationship between total arrests and total awards nominations. The slope of the line representing the relationship between the number of arrests and the number of awards nominations is steeper for white officers compared to black officers. However,  since the differences between the two slopes are marginal and the correlation between total arrests and several awards nominations for black officers and white officers are, respectively, 0.6 and 0.53, which means that there is only a moderate relationship, we were not able to show any evidence of racial bias. 
+
+Similarly, we conducted the same analysis for female officers' and male officers’s work performances. @fig-three shows the scatterplots that illustrate the correlation between total arrests and total awards nominations of females and males. Overall, there is a positive linear relationship between the two variables. The slopes of the line representing the relationship between the number of arrests and the number of awards nominations for both groups are approximately parallel which could mean that we can’t conclude that there is sexism in the police department. 
+
 
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Disparities in police nomination award {#sec-first-point}
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+Specification (1) displayed the regression of race on the number of awards nominations. Since the data set is panel data, the fixed effect method was used in the analysis to control for some individual-specific characteristics that don’t change over time which helped to control for some unobserved factors to address potential endogenity. Specification (1) controls for “cohort” which is defined as all officers who start in the same district in the same quarter and years. Column 1 yields a  (b1) of -6.217 which is 17% higher than the original paper results. This result is statistically significant at 1% and indicates that on average, black officers get 6.2 fewer awards than their white counterparts. With the average awards white officers received of 10.8 awards, black officers received 56.7% fewer awards than white officers.   
 
-## Second discussion point
+Specification (2) examined the relationship between gender and the number of awards nominations using the fixed effect model, controlling for cohorts and years. Column 2 yields a  (b1) of -4.368 which is 21% higher than the original paper results. At a 1% significance level,  This result indicates that on average, female officers get 4.4 fewer awards than male officers. Moreover, since male officers receive 10.2 awards nominations on average, female officers receive around 43% fewer awards than their male counterparts. 
 
-## Third discussion point
+Specification (3) shows the effect of race and gender on the number of awards nominations using the fixed effect model, controlling for cohorts and years. To reduce omitted variable bias and address endogeneity, we control for demographics( birth year, tenure) and police activities( total arrests, civilian complaints, and uses of forces). The original paper specified why some of these variables were added as they believe these variables correlated with the number of awards given. For example, older officers are more likely to be nominated because they have more experience in the field. Moreover, authors control for the number of arrests as they believe black officers are more likely to be assigned to black neighborhoods where there are more crimes, in which case they will have more arrests on their records. Therefore, by controlling for these variables, the analysis focuses only on the systemic issues of the internal police department. Specification (3)  yields a  (b1) of -3.801, which is 6% higher than the original paper's results, and a (b2) of -2.366, which is about 4% lower than the original paper’s results. The magnitudes of the coefficient after controlling for additional variables decrease which shows that there were omitted variable biases in the first 2 specifications. The result is statistically significant at 1% and indicates that on average, black male officers get 3.8 fewer awards than their white counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 32% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 2.4 awards less than white male officers on average which means they received around 20.4% fewer awards than white male officers on average. It also shows that black female officers on average receive 6.2 fewer awards than the white male officers which is 53% fewer awards than their male counterparts.
+
+Specification (4) illustrates the regression of gender and race on the number of awards nominations using the same method and control variables as specification (3). However, an interaction term of black and female variables was added to see how the relationship between black and female affects awards nominations number.  Column 4 yields a  (b1) of -4.856, a (b2) of -3.227, and a b3 of 3.206 which is, respectively, 5% higher than, 3.4% lower than,5.7% higher than the original paper’s results. All coefficients are significant at the 1% level. Specification (4) indicates that on average, black male officers get 4.8 fewer awards than their white male counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 41% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 3.2 awards less than white male officers on average which means they received around 27% fewer awards than white male officers on average. It also shows that black female officers on average receive 4.8 fewer awards than the white male officers. We witnessed that the number of awards that black officers receive are around the same regardless of their gender. 
+
+
+## Implication of Findings
+
+The issue of systematic racism has been ongoing in the police department in the US. The data set from CPD and the original paper has highlighted the issues of racism and sexism. To extend the findings of the original research, we conducted further analysis to investigate how the officer’s police activities, specifically arrest records, affect their awards nominations. The motivation behind our analysis is to see how officers of different races and genders are valued based on mere merit.
+
+Comparing the 2 results, the result from the original paper gives definitive evidence suggesting biases in the police department while our approach shows that there are inconclusive results on the biases if basing awards nominations on merit. These results even though are contradictory, they sparks an interest in further investigation of the police department with different populations and methods to get a more conclusive result.
+
+
+## Acknowledgment of systematic issues
+While it is still uncertain whether or not there are some biases in the internal police department, there are some systematic issues that should be addressed. Firstly, the underrepresentation in leadership of minority groups in the police department is one of the issues that causes biases. The lack of representation of black officers and female officers can lead to bias in valuation, tas assignment, and opportunity for advancement. Moreover, public perception is also an issue that we witness in the law authorities. Negative stereotypes of female officers and Black officers lead to the underrecognition of their work and contributions.  
+
 
 ## Weaknesses and next steps
-There are multiple weaknesses of the research done throughout this paper. Because Chicago is a segregated city in terms of race and income, black officers are more likely to be assigned to black neighborhoods which have higher crime rates leading to higher award performance. Another is when the average start month is calculated after mapping each month to its numeric value, it is likely that the larger the number, it creates a distortion in the average due to the small range [1:12]. This may be the reason why the start month data is all averaged around July. In addition, the research was based off of the cleaned data that has been provided from the authors of the original paper. This may limit our conclusions as the original authors have removed some data from the source which may be valuable in inducing our conclusions. For more accurate results it would be recommended to do further research using data sets such as national officer data with similar characteristics.
+There are multiple weaknesses of the research done throughout this paper. Because Chicago is a segregated city in terms of race and income, black officers are more likely to be assigned to black neighborhoods which have higher crime rates leading to higher award performance. Another is when the average start month is calculated after mapping each month to its numeric value, it is likely that the larger the number, it distorts the average due to the small range [1:12]. This may be the reason why the start month data is all averaged around July. In addition, the research was based on the cleaned data that had been provided from the authors of the original paper. This may limit our conclusions as the original authors have removed some data from the source which may be valuable in inducing our conclusions. For more accurate results it would be recommended to do further research using data sets such as national officer data with similar characteristics.
 
 
 # Conclusion
-In conclusion, this paper has explored how the replication of the tables and graphs are done, and if there are any disparities among gender or race. This was done using the dataset that was provided from the original paper  (Rim, Ba, and Rivera 2019b). The original paper has concluded that the analysis presents evidence of supervisors being biased against minority officers. However, through the further research that has been done, quite opposing results are presented. It is seen that there is a stronger correlation between black officers and award performance than white officers and award performance. Similarly it was found that the correlations of male and female to their award performance respectively, does not exhibit hints of gender disparities. The correlations are around 0.5 which means there is not a strong relationship between gender and race to award performance, it is not significant. Therefore, if we look at the whole CPD instead of only looking into unit 44, it is shown that supervisors may not be biased against minority officers, but for more accuracy it would be more plausible to do a similar research looking into the national officer data. 
-
-
+In conclusion, this paper has explored how the replication of the tables and graphs is done, and if there are any disparities among gender or race. This was done using the dataset that was provided in the original paper  [@ogpaper]. The original paper has concluded that the analysis presents evidence of supervisors being biased against minority officers. However, further research on the same idea found no evidence of the effort and work of minority officers being less recognized than their counterparts. That being said, the present indication of discrimination should motivate the police department to investigate and find countermeasures for this disparity. 
 
 
 

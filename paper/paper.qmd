@@ -74,21 +74,37 @@ The summary statistics show that the average birth year of unit 44 in CPD is 198
 #| echo:  false
 #| warning: false
 #| message: false
- # run script **name 
+# run script table_2_regression in script file first
+# regression table
 
-organized_table_2 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_2_data.csv")
-
-
+ stargazer(fe_reg_black,fe_reg_female, fe_reg_black_female,fe_reg_blackxfemale, header=FALSE,
+          omit =c("hisp", "asian", "natam", "birth_year", "tenure", "tenure2",
+          "tenure3", "L_cmpl_civ", "L_cmpl_civ2", "L_cmpl_civ3",
+          "L_arrest_total", "L_arrest_total2","L_arrest_total3","L_trr_new",
+          "L_trr_new2","L_trr_new3"),
+          omit.stat=c("f", "rsq","adj.rsq"),
+          add.lines=list(c("Control for"),
+                         c("Cohort", "Yes", "Yes", "Yes", "Yes"), 
+                         c("Year",  "Yes", "Yes", "Yes", "Yes"), 
+                         c("Demographics", " ", " ", "Yes", "Yes"),
+                         c("Policing activities", "", "", "Yes", "Yes"),
+                         c("Reference group mean",round(mean_white, digits = 2), 
+                           round(mean_female_0, digits = 2), 
+                           round(mean_white_female_0, digits = 2), 
+                           round(mean_white_female_0, digits = 2))), 
+          type = 'text', star.cutoffs = NA, omit.table.layout = "n")
 ```
-```{r}
-table_content <- readLines("~/Police-Award-Nomination-Paper-Reproduction/table_2.tex", warn = FALSE)
 
-# Print the contents of the table
-cat(table_content, sep = "\n")
-```
+$$ 
+\text{Award_perf}_{it} = \beta_0 + \beta_1 \text{Black}_{it} + \beta_2 \text{Hisp}_{it} + \beta_3 \text{Asian}_{it} + \beta_4 \text{Natam}_{it} + e_{it}
+$$
+$$
+\text{Award_perf}_{it} = \beta_0 + \beta_1 \text{female}_{it}
+$$
 
-
-
+$$
+\text{Award_perf}_{it} = \beta_0 + \beta_1 \text{Black}_i + \beta_2 \text{Female}_i + \beta_3 \text{Black}\times\text{Female}_{it} + \text{other confounding variables}
+$$
 
 (Table 2) is the replication of Table 2 in the original paper, and it shows the regressions of the variables black and female on the total awards nomination with 4 specifications. The result of the replication is slightly different than the result in the paper as the author took an estimate of the sample in the data set without specifying which estimates. Using this method gave the author only 4057 observations out of 5775 observations. However, the results when we use the entire data set are close to the original paper and we come to the same conclusion. 
 

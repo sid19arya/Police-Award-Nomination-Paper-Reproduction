@@ -26,6 +26,7 @@ library(dplyr)
 library(readr)
 library(stringr)
 library(stargazer)
+library(kableExtra)
 ```
 
 
@@ -44,10 +45,17 @@ The data of the characteristics of CPD is obtained from the original paper (Rim,
 
 ## Summary statistics.
 ```{r}
+#| label: tabl-one
 #| echo: false
+#| warning: false
+#| message: false
 # run code in ***name of script
 organized_table_1 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_1_data.csv")
-organized_table_1
+
+# stargazer(organized_table_1[,], type='latex')
+
+kable(organized_table_1, "latex", booktabs = TRUE, caption = "Summary Statistics for My Data") %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
 
@@ -61,12 +69,17 @@ The summary statistics show that the average birth year of unit 44 in CPD is 198
 
 ## Disparities in police awards 
 ```{r}
+#| label: tabl-two
 #| echo:  false
 #| warning: false
 #| message: false
  # run script **name 
 
 organized_table_2 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_2_data.csv")
+
+
+#kable(organized_table_2, "latex", booktabs = TRUE, caption = "Summary Statistics for My Data") %>%
+#  kable_styling(latex_options = c("striped", "hold_position"))
 organized_table_2
 
 ```
@@ -88,7 +101,81 @@ Specification (3) shows the effect of race and gender on the number of awards no
 
 Specification (4) illustrates the regression of gender and race on the number of awards nominations using the same method and control variables as specification (3). However, an interaction term of black and female variables was added to see how the relationship between black and female affects awards nominations number.  Column 4 yields a  (b1) of -4.856, a (b2) of -3.227, and a b3 of 3.206 which is, respectively, 5% higher than, 3.4% lower than,5.7% higher than the original paper’s results. All coefficients are significant at the 1% level. Specification (4) indicates that on average, black male officers get 4.8 fewer awards than their white male counterparts. Additionally, with the average awards of officers received of 11.73 awards, black male officers received approximately 41% fewer awards than average white male officers. Specification (3) also stated that there white female officers get 3.2 awards less than white male officers on average which means they received around 27% fewer awards than white male officers on average. It also shows that black female officers on average receive 4.8 fewer awards than the white male officers. We witnessed that the number of awards that black officers receives are around the same regardless of their gender.
 
+
 ## New work to be added... 
+
+```{r}
+#| label: fig-one
+#| echo: false
+#| warning: false
+#| message: false
+C_df <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/figure_1_data.csv")
+
+
+ggplot(C_df, aes(x = qtile, y = coef, color = ifelse(bw == 1, "Black-White Gap", "Female-Male Gap"))) +
+  geom_errorbar(aes(ymin = lb, ymax = ub), width = 0.02) +
+  geom_point(size = 2, alpha=0.3) +
+  ylab("Minority Gap") +
+  xlab("Quantiles") +
+  scale_x_continuous(breaks = seq(0.1, 0.9, by = 0.1)) +
+  scale_color_manual(values = c("Black-White Gap" = "red", "Female-Male Gap" = "blue")) +
+  theme_minimal() +
+  theme(legend.position = "top", legend.title = element_blank())
+```
+
+
+
+```{r}
+#| label: fig-two
+#| echo: false
+#| warning: false
+#| message: false
+#| 
+officers = read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/analysis_officer_year_data.csv")
+black_officers = officers[officers$black == 1,]
+white_officers = officers[officers$white == 1,]
+black_officers$group <- "Black Officers"
+white_officers$group <- "White Officers"
+
+combined_data <- rbind(black_officers, white_officers)
+ggplot(combined_data, aes(x = arrest_total, y = awd_perf, color = group)) +
+  geom_point(alpha = 0.3) +  # Adjust alpha for transparency
+  geom_smooth(method = "lm", se = FALSE) +  # Add lines of best fit
+  labs(title = "Comparison of Arrest Total and AWD Performance",
+       x = "Arrest Total",
+       y = "Award Nominations") +
+  scale_color_manual(values = c("Black Officers" = "red", "White Officers" = "blue")) +  # Set colors
+  theme_minimal()
+
+# Correlation for blakc officers: 0.601
+# Correlation for white officers:0.53
+```
+```{r}
+#| label: fig-three
+#| echo: false
+#| warning: false
+#| message: false
+male_officers = officers[officers$female == 0,]
+
+female_officers = officers[officers$female == 1,]
+
+male_officers$group <- "Male Officers"
+female_officers$group <- "Female Officers"
+
+combined_data <- rbind(male_officers, female_officers)
+ggplot(combined_data, aes(x = arrest_total, y = awd_perf, color = group)) +
+  geom_point(alpha = 0.3) +  # Adjust alpha for transparency
+  geom_smooth(method = "lm", se = FALSE) +  # Add lines of best fit
+  labs(title = "Comparison of Arrest Total and AWD Performance",
+       x = "Arrest Total",
+       y = "Award Nominations") +
+  scale_color_manual(values = c("Male Officers" = "red", "Female Officers" = "blue")) +  # Set colors
+  theme_minimal()
+
+
+# Correlation for blakc officers: 0.611
+# Correlation for white officers:0.520
+```
 
 -> Correlation between awards and arrests for black and white officers separately, to draw inferences towards whether race plays a factor in good performance being rewarded
 -> findings: Yes, but not in a way that biases against minorities. 0.6 and 0.5 correlation from black and white respectively. 

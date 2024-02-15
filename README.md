@@ -4,6 +4,9 @@
 
 There haven't been many studies about racial and gender disparities within the police departments. If there are internal disparities among race or gender, this paper could motivate the police department to counterbalance promotion and advancement to resolve this disparity. Thus, this paper will replicate the tables and graphs of the original paper and further research to recognize if there are any disparities among the whole Chicago Police Department. Our research conveys that there is no disparities among CPD; opposing the results from the original paper.
 
+## Reproduction
+
+Replication on Social Science Reproduction platform available at: https://doi.org/10.48152/ssrp-5nym-9g31
 
 ## File Structure
 
@@ -19,4 +22,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-No LLM's were used throughout the whole paper to aid with the coding nor the writing aspect.
+No LLM's (including ChatGPT and Co-Pilot) were used throughout the whole paper to aid with the coding nor the writing aspect.

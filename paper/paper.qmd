@@ -27,6 +27,7 @@ library(readr)
 library(stringr)
 library(stargazer)
 library(kableExtra)
+library(gtsummary)
 ```
 
 
@@ -78,11 +79,15 @@ The summary statistics show that the average birth year of unit 44 in CPD is 198
 organized_table_2 <- read.csv("~/Police-Award-Nomination-Paper-Reproduction/data/analysis_data/table_2_data.csv")
 
 
-#kable(organized_table_2, "latex", booktabs = TRUE, caption = "Summary Statistics for My Data") %>%
-#  kable_styling(latex_options = c("striped", "hold_position"))
-organized_table_2
-
 ```
+```{r}
+table_content <- readLines("~/Police-Award-Nomination-Paper-Reproduction/table_2.tex", warn = FALSE)
+
+# Print the contents of the table
+cat(table_content, sep = "\n")
+```
+
+
 
 
 (Table 2) is the replication of Table 2 in the original paper, and it shows the regressions of the variables black and female on the total awards nomination with 4 specifications. The result of the replication is slightly different than the result in the paper as the author took an estimate of the sample in the data set without specifying which estimates. Using this method gave the author only 4057 observations out of 5775 observations. However, the results when we use the entire data set are close to the original paper and we come to the same conclusion. 
